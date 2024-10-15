@@ -18,7 +18,9 @@ Desarrollar un videojuego en un entorno 3D partiendo de las bases estudiadas en 
 
 ## Ficha Técnica
 
-...
+- **Engine:** Unity3D 2022.3.50f1
+- **Plantilla:** Universal 3D (Core)
+- **Target:** PC y Consolas
 
 ## Información de herramientas utilizadas
 
