@@ -3,6 +3,7 @@ Builds
 Logs
 obj
 UserSettings
+Temp
 
 *.sln
 *.csproj
