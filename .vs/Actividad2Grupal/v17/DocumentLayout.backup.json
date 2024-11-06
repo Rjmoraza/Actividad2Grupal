@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\erne_\\Documents\\UNIR\\Desarrollo 2\\Actividad2Grupal\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{7C0F1063-DFF7-B060-C37D-E06073AC392E}|Unity.RenderPipelines.Universal.Editor.csproj|c:\\users\\erne_\\documents\\unir\\desarrollo 2\\actividad2grupal\\library\\packagecache\\com.unity.render-pipelines.universal@14.0.11\\editor\\converter\\renderpipelineconverterseditor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7C0F1063-DFF7-B060-C37D-E06073AC392E}|Unity.RenderPipelines.Universal.Editor.csproj|solutionrelative:library\\packagecache\\com.unity.render-pipelines.universal@14.0.11\\editor\\converter\\renderpipelineconverterseditor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{BF6E611C-3751-5D00-F628-A34573A1D395}|Assembly-CSharp-Editor.csproj|c:\\users\\erne_\\documents\\unir\\desarrollo 2\\actividad2grupal\\assets\\flooded_grounds\\postprocessing\\editor\\propertydrawers\\mindrawer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BF6E611C-3751-5D00-F628-A34573A1D395}|Assembly-CSharp-Editor.csproj|solutionrelative:assets\\flooded_grounds\\postprocessing\\editor\\propertydrawers\\mindrawer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -19,12 +23,25 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "RenderPipelineConvertersEditor.cs",
+              "DocumentMoniker": "C:\\Users\\erne_\\Documents\\UNIR\\Desarrollo 2\\Actividad2Grupal\\Library\\PackageCache\\com.unity.render-pipelines.universal@14.0.11\\Editor\\Converter\\RenderPipelineConvertersEditor.cs",
+              "RelativeDocumentMoniker": "Library\\PackageCache\\com.unity.render-pipelines.universal@14.0.11\\Editor\\Converter\\RenderPipelineConvertersEditor.cs",
+              "ToolTip": "C:\\Users\\erne_\\Documents\\UNIR\\Desarrollo 2\\Actividad2Grupal\\Library\\PackageCache\\com.unity.render-pipelines.universal@14.0.11\\Editor\\Converter\\RenderPipelineConvertersEditor.cs",
+              "RelativeToolTip": "Library\\PackageCache\\com.unity.render-pipelines.universal@14.0.11\\Editor\\Converter\\RenderPipelineConvertersEditor.cs",
+              "ViewState": "AgIAAP8CAAAAAAAAAAAjwA4DAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-05T03:38:11.107Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "MinDrawer.cs",
               "DocumentMoniker": "C:\\Users\\erne_\\Documents\\UNIR\\Desarrollo 2\\Actividad2Grupal\\Assets\\Flooded_Grounds\\PostProcessing\\Editor\\PropertyDrawers\\MinDrawer.cs",
               "RelativeDocumentMoniker": "Assets\\Flooded_Grounds\\PostProcessing\\Editor\\PropertyDrawers\\MinDrawer.cs",
               "ToolTip": "C:\\Users\\erne_\\Documents\\UNIR\\Desarrollo 2\\Actividad2Grupal\\Assets\\Flooded_Grounds\\PostProcessing\\Editor\\PropertyDrawers\\MinDrawer.cs",
               "RelativeToolTip": "Assets\\Flooded_Grounds\\PostProcessing\\Editor\\PropertyDrawers\\MinDrawer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAB4AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-05T03:23:06.456Z",
               "EditorCaption": ""
