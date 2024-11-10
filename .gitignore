@@ -5,6 +5,7 @@ obj
 UserSettings
 Temp
 
+.vs
 *.sln
 *.csproj
 
