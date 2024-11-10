@@ -24,6 +24,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "LookAdditive",
+                    "type": "Value",
+                    "id": "61cda942-c9eb-495a-a1e8-c47392cf7728",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Fire1",
                     "type": "Button",
                     "id": "14456c62-a363-4fd6-8aec-be9b5b687ecf",
@@ -36,6 +45,15 @@
                     "name": "Fire2",
                     "type": "Button",
                     "id": "cf3950e8-46e3-429b-9e54-28b186dccd4e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Aim",
+                    "type": "Button",
+                    "id": "7e8f69b3-5540-4513-8c9b-30b81db10e3e",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -111,17 +129,6 @@
                 },
                 {
                     "name": "",
-                    "id": "06aa3956-1391-4d25-b6bf-f21e6d321c30",
-                    "path": "<Mouse>/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Look",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "2358dde7-eef4-4b6c-a8cb-120423a52ad5",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
@@ -172,6 +179,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Fire2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "247d0e92-9344-4252-8343-6de75be40fb7",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cba00329-1874-4bd3-8a61-05422bd9a7e6",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "06aa3956-1391-4d25-b6bf-f21e6d321c30",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LookAdditive",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
