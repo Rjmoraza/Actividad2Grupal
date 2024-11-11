@@ -7,6 +7,7 @@ using UnityEngine.Animations.Rigging;
 public class PlayerController : MonoBehaviour
 {
     Rigidbody rb;
+    CameraController cam;
     Vector3 movementVector;
     Vector3 animVector;
     float yawValue;
@@ -46,11 +47,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     GameObject shotgunFirepoint;
 
+    [SerializeField]
+    GameObject cameraPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         shotgun.SetActive(false);
+        GameObject camContainer = Instantiate(cameraPrefab, Vector3.zero, Quaternion.identity);
+        cam = camContainer.GetComponentInChildren<CameraController>();
+        cam.Init(transform, targetPoint.transform);
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
@@ -96,10 +105,14 @@ public class PlayerController : MonoBehaviour
         if (movementVector.magnitude > 1) movementVector = movementVector.normalized;
     }
 
+    /// <summary>
+    /// Look with the mouse
+    /// </summary>
+    /// <param name="c"></param>
     public void OnLookAdditive(InputAction.CallbackContext c)
     {
         Vector2 lookValue = c.ReadValue<Vector2>();
-        yawValue = lookValue.x;
+        yawValue = lookValue.x * 0.2f; //Mouse delta is too sensitive
         pitchValue = Mathf.Clamp(pitchValue + lookValue.y * Time.fixedDeltaTime, minAimHeight, maxAimHeight);
     }
 
@@ -131,12 +144,12 @@ public class PlayerController : MonoBehaviour
         if (c.performed)
         {
             aimTarget = 1;
-            CameraController.instance.EngageAim();
+            cam.EngageAim();
         }
         else if (c.canceled)
         {
             aimTarget = 0;
-            CameraController.instance.DisengageAim();
+            cam.DisengageAim();
         }
     }
 

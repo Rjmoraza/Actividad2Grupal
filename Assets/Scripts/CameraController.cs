@@ -5,8 +5,6 @@ using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
-    public static CameraController instance;
-
     CinemachineVirtualCamera cvc;
     Cinemachine3rdPersonFollow cpf;
     CinemachineBrain cb;
@@ -31,22 +29,24 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     float adjustmentMultiplier = 2f;
 
+    public void Init(Transform player, Transform target)
+    {
+        cam = Camera.main;
+        cvc = GetComponent<CinemachineVirtualCamera>();
+        cpf = cvc.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
+        cb = cam.GetComponent<CinemachineBrain>();
+
+        cvc.Follow = player;
+        cvc.LookAt = target;
+
+        side = targetSide = maxSide;
+        distance = targetDistance = maxDistance;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        if (instance != null) Destroy(gameObject);
-        else
-        {
-            instance = this;
-
-            cam = Camera.main;
-            cvc = GetComponent<CinemachineVirtualCamera>();
-            cpf = cvc.GetCinemachineComponent<Cinemachine3rdPersonFollow>();
-            cb = cam.GetComponent<CinemachineBrain>();
-
-            side = targetSide = maxSide;
-            distance = targetDistance = maxDistance;
-        }
+        
     }
 
     // Update is called once per frame
