@@ -1,12 +1,30 @@
-Library
-Builds
-Logs
-obj
+[Ll]ibrary/
+[Bb]uilds/
+[Bb]uild/
+[Ll]ogs/
+[Oo]bj/
 UserSettings
-Temp
+[Tt]emp/
 
-.vs
+.vs/
 *.sln
 *.csproj
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
 
 .vsconfig
+
+# Archivos temporales del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de paquetes
+*.unitypackage
+
+# Otros archivos temporales
+*.tmp
+*.temp
