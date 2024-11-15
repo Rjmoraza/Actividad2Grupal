@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     float aimTarget;
     bool canWalk = true;
     float waterCooldown = 0;
-    
+
     [SerializeField]
     Animator anim;
 
@@ -50,14 +50,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     GameObject cameraPrefab;
 
+    [SerializeField]
+    CameraBrain camBrain;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         shotgun.SetActive(false);
         GameObject camContainer = Instantiate(cameraPrefab, Vector3.zero, Quaternion.identity);
-        cam = camContainer.GetComponentInChildren<CameraController>();
-        cam.Init(transform, targetPoint.transform);
+        camBrain = camContainer.GetComponent<CameraBrain>();
+        camBrain.InitCamera(transform, targetPoint.transform);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -66,11 +69,41 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (waterCooldown > 0) waterCooldown -= Time.deltaTime;
+
+        if (canWalk)
+        {
+            Vector3 heading = (transform.forward * movementVector.y + transform.right * movementVector.x);
+            rb.velocity = heading * movementSpeed + Vector3.up * rb.velocity.y;
+            //Quaternion deltaRotation = Quaternion.Euler(0, yawValue * rotationSpeed * Time.fixedDeltaTime, 0);
+            //rb.MoveRotation(rb.rotation * deltaRotation);
+            transform.Rotate(0, yawValue * rotationSpeed * Time.deltaTime, 0);
+            targetPoint.transform.localPosition = new Vector3(0, pitchValue, 5);
+
+            if (aim < aimTarget - 0.05f) aim += Time.deltaTime * 3;
+            else if (aim > aimTarget + 0.05f) aim -= Time.deltaTime * 3;
+            if (aim < 0.5f && shotgun.activeSelf) shotgun.SetActive(false);
+            if (aim > 0.5f && !shotgun.activeSelf) shotgun.SetActive(true);
+            rig.weight = aim;
+
+            Vector3 actualVelocity = new Vector3(movementVector.x, 0, movementVector.y).normalized;
+            animVector = Vector3.Lerp(animVector, actualVelocity, Time.deltaTime * 5);
+            anim.SetFloat("ZVelocity", animVector.z);
+            anim.SetFloat("XVelocity", animVector.x);
+        }
+        else
+        {
+            if (aim > 0) aim -= Time.deltaTime * 5;
+            rig.weight = aim;
+            anim.SetFloat("XVelocity", 0);
+            anim.SetFloat("ZVelocity", 0);
+        }
+        camBrain.UpdateCamera();
     }
 
     private void FixedUpdate()
     {
-        if(canWalk)
+        /*
+        if (canWalk)
         {
             Vector3 heading = (transform.forward * movementVector.y + transform.right * movementVector.x);
             rb.velocity = heading * movementSpeed + Vector3.up * rb.velocity.y;
@@ -96,6 +129,7 @@ public class PlayerController : MonoBehaviour
             anim.SetFloat("XVelocity", 0);
             anim.SetFloat("ZVelocity", 0);
         }
+        */
     }
 
     public void OnMove(InputAction.CallbackContext c)
@@ -121,8 +155,10 @@ public class PlayerController : MonoBehaviour
         Vector2 lookValue = c.ReadValue<Vector2>();
         yawValue = lookValue.x;
 
+        print(yawValue);
+
         if (lookValue.y > 0) pitchValue = lookValue.y * maxAimHeight;
-        else if (lookValue.y < 0) pitchValue = lookValue.y * -minAimHeight;        
+        else if (lookValue.y < 0) pitchValue = lookValue.y * -minAimHeight;
     }
 
     public void OnFire1(InputAction.CallbackContext c)
@@ -132,7 +168,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnFire2(InputAction.CallbackContext c)
     {
-        if(waterCooldown <= 0)
+        if (waterCooldown <= 0)
         {
             waterCooldown = maxWaterCooldown;
             StartCoroutine(ThrowWater());
@@ -144,12 +180,14 @@ public class PlayerController : MonoBehaviour
         if (c.performed)
         {
             aimTarget = 1;
-            cam.EngageAim();
+            camBrain.EngageAim();
+            //cam.EngageAim();
         }
         else if (c.canceled)
         {
             aimTarget = 0;
-            cam.DisengageAim();
+            camBrain.DisengageAim();
+            //cam.DisengageAim();
         }
     }
 

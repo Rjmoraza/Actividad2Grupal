@@ -701,6 +701,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Banshee
       objectReference: {fileID: 0}
+    - target: {fileID: 1643427663507341982, guid: 287dd1a858edb7644976f687400ab18f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4326984139795363170, guid: 287dd1a858edb7644976f687400ab18f,
         type: 3}
       propertyPath: m_LocalPosition.x
