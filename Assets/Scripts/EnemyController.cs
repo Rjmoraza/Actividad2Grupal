@@ -12,13 +12,19 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     Animator anim;
 
+    [SerializeField]
+    SkinnedMeshRenderer[] renderers;
+
+    private Coroutine currentState;
+
     // Start is called before the first frame update
     void Start()
     {
         waypoints = GameObject.FindGameObjectsWithTag("EnemyWaypoint");
         agent = GetComponent<NavMeshAgent>();
 
-        StartCoroutine(Roam());
+        currentState = StartCoroutine(Roam());
+        TurnInvisible();
     }
 
     // Update is called once per frame
@@ -34,6 +40,44 @@ public class EnemyController : MonoBehaviour
             Vector3 targetPos = waypoints[Random.Range(0, waypoints.Length)].transform.position;
             agent.SetDestination(targetPos);
             yield return new WaitForSeconds(10);
+        }
+    }
+
+    public void TurnVisible()
+    {
+        StartCoroutine(TurnVisibleCoroutine());
+    }
+
+    public void TurnInvisible()
+    {
+        StartCoroutine(TurnInvisibleCoroutine());
+    }
+
+    private IEnumerator TurnVisibleCoroutine()
+    {
+        float alpha = 0;
+        while (alpha < 1)
+        {
+            alpha += Time.deltaTime;
+            foreach(SkinnedMeshRenderer mr in renderers)
+            {
+                mr.material.SetFloat("_Alpha", alpha);
+            }
+            yield return null;
+        }
+    }
+
+    private IEnumerator TurnInvisibleCoroutine()
+    {
+        float alpha = 1;
+        while(alpha > 0)
+        {
+            alpha -= Time.deltaTime;
+            foreach (SkinnedMeshRenderer mr in renderers)
+            {
+                mr.material.SetFloat("_Alpha", alpha);
+            }
+            yield return null;
         }
     }
 }
