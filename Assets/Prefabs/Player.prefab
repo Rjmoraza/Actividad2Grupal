@@ -533,8 +533,9 @@ MonoBehaviour:
   maxWaterCooldown: 10
   shotgun: {fileID: 3124188412130731553}
   shotgunFirepoint: {fileID: 2037293450781051772}
-  cameraPrefab: {fileID: 3332535280211862146, guid: 8901027f4dc8e7444a827905df260685,
+  cameraPrefab: {fileID: 2633553722651629491, guid: b68f44245e011ab4cb2e30453d247073,
     type: 3}
+  camBrain: {fileID: 0}
 --- !u!114 &8176320886139010752
 MonoBehaviour:
   m_ObjectHideFlags: 0
