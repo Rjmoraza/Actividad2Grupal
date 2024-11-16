@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     Rigidbody rb;
     CameraBrain camBrain;
+    PostprocessingManager postprocessing;
     Vector3 movementVector;
     Vector3 animVector;
     float yawValue;
@@ -57,9 +58,6 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     GameObject cameraPrefab;
-
-    [SerializeField]
-    GameObject waterVisualizer;
     
 
     // Start is called before the first frame update
@@ -73,6 +71,7 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         hitpoints = maxHP;
+        postprocessing = GameObject.Find("PostProcessing")?.GetComponent<PostprocessingManager>();
     }
 
     // Update is called once per frame
@@ -112,6 +111,13 @@ public class PlayerController : MonoBehaviour
             rig.weight = aim;
         }
         camBrain.UpdateCamera();
+
+        // Automatically recover one HP per second
+        if(hitpoints > 0 && hitpoints < maxHP)
+        {
+            hitpoints += Time.deltaTime;
+        }
+        if(postprocessing) postprocessing.UpdateHP(hitpoints, maxHP);
     }
 
     public void OnMove(InputAction.CallbackContext c)
@@ -142,8 +148,6 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 lookValue = c.ReadValue<Vector2>();
         yawValue = lookValue.x;
-
-        print(yawValue);
 
         if (lookValue.y > 0) pitchValue = lookValue.y * maxAimHeight;
         else if (lookValue.y < 0) pitchValue = lookValue.y * -minAimHeight;
@@ -181,6 +185,7 @@ public class PlayerController : MonoBehaviour
     {
         if(hitpoints > 0)
         {
+            if (postprocessing) postprocessing.ShowHit();
             hitpoints -= dmg;
             if (hitpoints > 0)
             {
@@ -224,16 +229,10 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-
-        waterVisualizer.transform.position = transform.position + transform.forward * 3.15f;
-        //waterVisualizer.SetActive(true);
         
         yield return new WaitForSeconds(1.6f);
         canWalk = true;
         canAim = true;
-
-        waterVisualizer.SetActive(false);
-        
     }
 
     IEnumerator FireShotgun()
@@ -263,5 +262,10 @@ public class PlayerController : MonoBehaviour
             Destroy(explosion);
         }
         yield return null;
+    }
+
+    public bool IsAlive()
+    {
+        return hitpoints > 0;
     }
 }
