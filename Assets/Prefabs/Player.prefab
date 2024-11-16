@@ -420,7 +420,7 @@ GameObject:
   - component: {fileID: 8095547237134917981}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -562,6 +562,7 @@ MonoBehaviour:
   minAimHeight: -1
   rotationSpeed: 60
   maxWaterCooldown: 5
+  maxHP: 100
   shotgun: {fileID: 3124188412130731553}
   shotgunFirepoint: {fileID: 2037293450781051772}
   explosionVFX: {fileID: 1337198075554910, guid: 25c7aa9ad705fe143a4d71c1c8deb7d4,

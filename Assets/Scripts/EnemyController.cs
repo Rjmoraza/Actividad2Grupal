@@ -40,7 +40,7 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        waypoints = GameObject.FindGameObjectsWithTag("EnemyWaypoint");
+        //waypoints = GameObject.FindGameObjectsWithTag("EnemyWaypoint");
         agent = GetComponent<NavMeshAgent>();
         source = GetComponent<AudioSource>();
         hitpoints = maxHP;
@@ -53,6 +53,7 @@ public class EnemyController : MonoBehaviour
     void Update()
     {
         anim.SetFloat("ZSpeed", agent.velocity.magnitude);
+        print(currentState);
     }
 
     void SwitchState(State newState)
@@ -91,7 +92,10 @@ public class EnemyController : MonoBehaviour
         while(true)
         {
             Vector3 targetPos = waypoints[Random.Range(0, waypoints.Length)].transform.position;
-            agent.SetDestination(targetPos);
+            NavMeshPath path = new NavMeshPath();
+            agent.CalculatePath(targetPos, path);
+            agent.SetPath(path);
+            //agent.SetDestination(targetPos);
             yield return new WaitForSeconds(10);
         }
     }
@@ -105,7 +109,11 @@ public class EnemyController : MonoBehaviour
             if(player != null)
             {
                 Vector3 direction = (transform.position - player.transform.position).normalized;
-                agent.SetDestination(transform.position + direction * 10);
+                NavMeshPath path = new NavMeshPath();
+                print(agent.CalculatePath(transform.position + direction * 10, path));
+                agent.SetPath(path);
+                //agent.SetDestination(transform.position + direction * 10);
+                print("I'm Fleeing");
             }
             yield return null;
         }
@@ -123,7 +131,10 @@ public class EnemyController : MonoBehaviour
                 float distance = Vector3.Distance(transform.position, playerPos);
                 if (distance > 2)
                 {
-                    agent.SetDestination(playerPos);
+                    NavMeshPath path = new NavMeshPath();
+                    agent.CalculatePath(playerPos, path);
+                    agent.SetPath(path);
+                    //agent.SetDestination(playerPos);
                     agent.speed = 3.5f;
                 }
                 else
@@ -180,11 +191,13 @@ public class EnemyController : MonoBehaviour
 
     public void TurnVisible()
     {
+        visible = true;
         StartCoroutine(TurnVisibleCoroutine());
     }
 
     public void TurnInvisible()
     {
+        visible = false;
         StartCoroutine(TurnInvisibleCoroutine());
     }
 
@@ -214,5 +227,20 @@ public class EnemyController : MonoBehaviour
             }
             yield return null;
         }
+    }
+
+    public bool IsVisible()
+    {
+        return visible;
+    }
+
+    public bool IsAlive()
+    {
+        return hitpoints > 0;
+    }
+
+    public void SetWaypoints(GameObject[] waypoints)
+    {
+        this.waypoints = waypoints;
     }
 }
