@@ -14,6 +14,12 @@ public class PlayerAnimatorEvents : MonoBehaviour
     [SerializeField]
     AudioClip[] steps;
 
+    [SerializeField]
+    GameObject waterVFX;
+
+    [SerializeField]
+    GameObject waterSocket;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,5 +39,17 @@ public class PlayerAnimatorEvents : MonoBehaviour
 
         source.PlayOneShot(step);
         source.PlayOneShot(creak);
+    }
+
+    public void ThrowWater()
+    {
+        StartCoroutine(SpawnWater());
+    }
+
+    private IEnumerator SpawnWater()
+    {
+        GameObject water = Instantiate(waterVFX, waterSocket.transform.position, waterSocket.transform.rotation);
+        yield return new WaitForSeconds(5);
+        Destroy(water);
     }
 }

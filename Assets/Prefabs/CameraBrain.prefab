@@ -108,7 +108,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   farOffset: {x: 0.3, y: 0.6, z: -1}
-  closeOffset: {x: 0.3, y: 0.6, z: -0.4}
+  closeOffset: {x: 0.3, y: 0.6, z: -0.55}
   damping: {x: 0, y: 0, z: 0}
   cameraRadius: 0.5
   followTarget: {fileID: 0}
