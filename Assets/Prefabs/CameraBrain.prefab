@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   farOffset: {x: 0.3, y: 0.6, z: -1}
-  closeOffset: {x: 0.3, y: 0.6, z: -0.4}
+  closeOffset: {x: 0.3, y: 0.6, z: -0.55}
   damping: {x: 0, y: 0, z: 0}
   cameraRadius: 0.5
   followTarget: {fileID: 0}

@@ -7,7 +7,7 @@ using UnityEngine.Animations.Rigging;
 public class PlayerController : MonoBehaviour
 {
     Rigidbody rb;
-    CameraController cam;
+    CameraBrain camBrain;
     Vector3 movementVector;
     Vector3 animVector;
     float yawValue;
@@ -15,7 +15,9 @@ public class PlayerController : MonoBehaviour
     float aim;
     float aimTarget;
     bool canWalk = true;
+    bool canAim = true;
     float waterCooldown = 0;
+    float hitpoints;
 
     [SerializeField]
     Animator anim;
@@ -42,16 +44,23 @@ public class PlayerController : MonoBehaviour
     float maxWaterCooldown = 10;
 
     [SerializeField]
+    float maxHP = 100;
+
+    [SerializeField]
     GameObject shotgun;
 
     [SerializeField]
     GameObject shotgunFirepoint;
 
     [SerializeField]
+    GameObject explosionVFX;
+
+    [SerializeField]
     GameObject cameraPrefab;
 
     [SerializeField]
-    CameraBrain camBrain;
+    GameObject waterVisualizer;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -63,6 +72,7 @@ public class PlayerController : MonoBehaviour
         camBrain.InitCamera(transform, targetPoint.transform);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        hitpoints = maxHP;
     }
 
     // Update is called once per frame
@@ -74,16 +84,8 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 heading = (transform.forward * movementVector.y + transform.right * movementVector.x);
             rb.velocity = heading * movementSpeed + Vector3.up * rb.velocity.y;
-            //Quaternion deltaRotation = Quaternion.Euler(0, yawValue * rotationSpeed * Time.fixedDeltaTime, 0);
-            //rb.MoveRotation(rb.rotation * deltaRotation);
             transform.Rotate(0, yawValue * rotationSpeed * Time.deltaTime, 0);
             targetPoint.transform.localPosition = new Vector3(0, pitchValue, 5);
-
-            if (aim < aimTarget - 0.05f) aim += Time.deltaTime * 3;
-            else if (aim > aimTarget + 0.05f) aim -= Time.deltaTime * 3;
-            if (aim < 0.5f && shotgun.activeSelf) shotgun.SetActive(false);
-            if (aim > 0.5f && !shotgun.activeSelf) shotgun.SetActive(true);
-            rig.weight = aim;
 
             Vector3 actualVelocity = new Vector3(movementVector.x, 0, movementVector.y).normalized;
             animVector = Vector3.Lerp(animVector, actualVelocity, Time.deltaTime * 5);
@@ -92,44 +94,24 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (aim > 0) aim -= Time.deltaTime * 5;
-            rig.weight = aim;
             anim.SetFloat("XVelocity", 0);
             anim.SetFloat("ZVelocity", 0);
         }
-        camBrain.UpdateCamera();
-    }
 
-    private void FixedUpdate()
-    {
-        /*
-        if (canWalk)
+        if(canAim)
         {
-            Vector3 heading = (transform.forward * movementVector.y + transform.right * movementVector.x);
-            rb.velocity = heading * movementSpeed + Vector3.up * rb.velocity.y;
-            Quaternion deltaRotation = Quaternion.Euler(0, yawValue * rotationSpeed * Time.fixedDeltaTime, 0);
-            rb.MoveRotation(rb.rotation * deltaRotation);
-            targetPoint.transform.localPosition = new Vector3(0, pitchValue, 5);
-
-            if (aim < aimTarget - 0.05f) aim += Time.fixedDeltaTime * 3;
-            else if (aim > aimTarget + 0.05f) aim -= Time.fixedDeltaTime * 3;
+            if (aim < aimTarget - 0.05f) aim += Time.deltaTime * 3;
+            else if (aim > aimTarget + 0.05f) aim -= Time.deltaTime * 3;
             if (aim < 0.5f && shotgun.activeSelf) shotgun.SetActive(false);
             if (aim > 0.5f && !shotgun.activeSelf) shotgun.SetActive(true);
             rig.weight = aim;
-
-            Vector3 actualVelocity = new Vector3(movementVector.x, 0, movementVector.y).normalized;
-            animVector = Vector3.Lerp(animVector, actualVelocity, Time.fixedDeltaTime * 5);
-            anim.SetFloat("ZVelocity", animVector.z);
-            anim.SetFloat("XVelocity", animVector.x);
         }
         else
         {
-            if (aim > 0) aim -= Time.fixedDeltaTime * 5;
+            if (aim > 0) aim -= Time.deltaTime * 5;
             rig.weight = aim;
-            anim.SetFloat("XVelocity", 0);
-            anim.SetFloat("ZVelocity", 0);
         }
-        */
+        camBrain.UpdateCamera();
     }
 
     public void OnMove(InputAction.CallbackContext c)
@@ -141,8 +123,9 @@ public class PlayerController : MonoBehaviour
 
     /// <summary>
     /// Look with the mouse
+    /// The vertical axis of the mouse is added to the current look angle
     /// </summary>
-    /// <param name="c"></param>
+    /// <param name="c">Information of the Input received in Vector2 format</param>
     public void OnLookAdditive(InputAction.CallbackContext c)
     {
         Vector2 lookValue = c.ReadValue<Vector2>();
@@ -150,6 +133,11 @@ public class PlayerController : MonoBehaviour
         pitchValue = Mathf.Clamp(pitchValue + lookValue.y * Time.fixedDeltaTime, minAimHeight, maxAimHeight);
     }
 
+    /// <summary>
+    /// Look with Gamepad
+    /// The vertical axis is taken as is (non-additive)
+    /// </summary>
+    /// <param name="c">Information from Input received in Vector2 format</param>
     public void OnLook(InputAction.CallbackContext c)
     {
         Vector2 lookValue = c.ReadValue<Vector2>();
@@ -163,7 +151,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnFire1(InputAction.CallbackContext c)
     {
-
+        StartCoroutine(FireShotgun());
     }
 
     public void OnFire2(InputAction.CallbackContext c)
@@ -181,21 +169,99 @@ public class PlayerController : MonoBehaviour
         {
             aimTarget = 1;
             camBrain.EngageAim();
-            //cam.EngageAim();
         }
         else if (c.canceled)
         {
             aimTarget = 0;
             camBrain.DisengageAim();
-            //cam.DisengageAim();
         }
+    }
+
+    public void Damage(float dmg)
+    {
+        if(hitpoints > 0)
+        {
+            hitpoints -= dmg;
+            if (hitpoints > 0)
+            {
+                StartCoroutine(DamageRoutine());
+            }
+            else
+            {
+                canAim = false;
+                canWalk = false;
+                anim.SetTrigger("Die");
+            }
+        }
+    }
+
+    IEnumerator DamageRoutine()
+    {
+        canWalk = false;
+        canAim = false;
+        anim.SetTrigger("Hit");
+        yield return new WaitForSeconds(1.3f);
+        canWalk = true;
+        canAim = true;
     }
 
     IEnumerator ThrowWater()
     {
         canWalk = false;
+        canAim = false;
         anim.SetTrigger("Throw");
-        yield return new WaitForSeconds(2.1f);
+
+        yield return new WaitForSeconds(1);
+
+        RaycastHit hit;
+        for(float angle = -1; angle <= 1; angle += 0.1f)
+        {
+            if (Physics.Raycast(transform.position, transform.forward + transform.right * angle, out hit, 10))
+            {
+                if (hit.collider.tag == "Enemy")
+                {
+                    hit.collider.GetComponent<EnemyController>().Reveal();
+                }
+            }
+        }
+
+        waterVisualizer.transform.position = transform.position + transform.forward * 3.15f;
+        //waterVisualizer.SetActive(true);
+        
+        yield return new WaitForSeconds(1.6f);
         canWalk = true;
+        canAim = true;
+
+        waterVisualizer.SetActive(false);
+        
+    }
+
+    IEnumerator FireShotgun()
+    {
+        if(aim >= 0.9f && canWalk)
+        {
+            canWalk = false;
+            anim.SetTrigger("Shoot");
+            yield return new WaitForSeconds(0.1f);
+            GameObject explosion = Instantiate(explosionVFX, shotgunFirepoint.transform.position, Quaternion.identity);
+
+            RaycastHit hit;
+            for (float angle = -0.5f; angle <= 0.5f; angle += 0.1f)
+            {
+                if (Physics.Raycast(transform.position, transform.forward + transform.right * angle, out hit, 10))
+                {
+                    if (hit.collider.tag == "Enemy")
+                    {
+                        hit.collider.GetComponent<EnemyController>().Damage(10);
+                    }
+                }
+            }
+
+            yield return new WaitForSeconds(0.5f);
+            canWalk = true;
+            yield return new WaitForSeconds(5);
+            Destroy(explosion);
+        }
+        yield return null;
     }
 }
