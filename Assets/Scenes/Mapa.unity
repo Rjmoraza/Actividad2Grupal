@@ -50993,9 +50993,9 @@ MonoBehaviour:
   m_IgnoreNavMeshObstacle: 1
   m_OverrideTileSize: 0
   m_TileSize: 256
-  m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
-  m_MinRegionArea: 2
+  m_OverrideVoxelSize: 1
+  m_VoxelSize: 0.1
+  m_MinRegionArea: 1
   m_NavMeshData: {fileID: 23800000, guid: 2a5d103b5c9652b4db24e1e1b39a9f6b, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &1483891234
@@ -66980,7 +66980,7 @@ PrefabInstance:
     - target: {fileID: 4326984139795363170, guid: 287dd1a858edb7644976f687400ab18f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.275223
+      value: 11.875
       objectReference: {fileID: 0}
     - target: {fileID: 4326984139795363170, guid: 287dd1a858edb7644976f687400ab18f,
         type: 3}
@@ -66990,7 +66990,7 @@ PrefabInstance:
     - target: {fileID: 4326984139795363170, guid: 287dd1a858edb7644976f687400ab18f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.100875
+      value: -0.579
       objectReference: {fileID: 0}
     - target: {fileID: 4326984139795363170, guid: 287dd1a858edb7644976f687400ab18f,
         type: 3}

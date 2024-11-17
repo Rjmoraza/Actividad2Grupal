@@ -53,7 +53,6 @@ public class EnemyController : MonoBehaviour
     void Update()
     {
         anim.SetFloat("ZSpeed", agent.velocity.magnitude);
-        print(currentState);
     }
 
     void SwitchState(State newState)
@@ -92,9 +91,12 @@ public class EnemyController : MonoBehaviour
         while(true)
         {
             Vector3 targetPos = waypoints[Random.Range(0, waypoints.Length)].transform.position;
-            NavMeshPath path = new NavMeshPath();
-            agent.CalculatePath(targetPos, path);
-            agent.SetPath(path);
+            if(agent.isOnNavMesh)
+            {
+                NavMeshPath path = new NavMeshPath();
+                agent.CalculatePath(targetPos, path);
+                agent.SetPath(path);
+            }
             //agent.SetDestination(targetPos);
             yield return new WaitForSeconds(10);
         }
