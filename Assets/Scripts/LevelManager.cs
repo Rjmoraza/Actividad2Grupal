@@ -41,6 +41,7 @@ public class LevelManager : MonoBehaviour
 
     IEnumerator LevelProcess()
     {
+        yield return new WaitForSeconds(1);
         while(enemy1.IsAlive())
         {
             if(enemy1.IsVisible())
@@ -54,6 +55,7 @@ public class LevelManager : MonoBehaviour
         Destroy(enemy1.gameObject);
 
         enemy2.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1);
         while(enemy2.IsAlive())
         {
             if(enemy2.IsVisible())
@@ -67,6 +69,7 @@ public class LevelManager : MonoBehaviour
         Destroy(enemy2.gameObject);
 
         enemy3.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1);
         while(enemy3.IsAlive())
         {
             if(enemy3.IsVisible())
