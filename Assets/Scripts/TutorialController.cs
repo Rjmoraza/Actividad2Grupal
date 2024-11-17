@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+//using UnityEngine.UIElements;
 
 public class TutorialController : MonoBehaviour
 {
@@ -12,29 +13,23 @@ public class TutorialController : MonoBehaviour
     private GameObject tutorialScreen;
     [SerializeField]
     private TextMeshProUGUI txtTitle;
-    //[SerializeField]
-    //private TextMeshProUGUI txtMessage;
-    //[SerializeField]
-    //private Image tutorialImage; // Referencia a la imagen en el Canvas
-    //[SerializeField]
-    //private Sprite[] images;
     [SerializeField]
     private string[] titles;
-    //[SerializeField]
-    //private string[] messages;
-    //[SerializeField]
-    //private int maxScreens;
     private int indexTutorial = 0;
     private float displayTime = 10f; // Tiempo en segundos
     private Animator titleAnimator;
-    //private Animator messageAnimator;
     [SerializeField]
     private Slider loadingBar;
     [SerializeField]
     private TextMeshProUGUI loadingText;
     [SerializeField]
     private TextMeshProUGUI continueText;
-    //private bool isTutorialComplete = false;
+    [SerializeField]
+    private Image imgKeyboard;
+    [SerializeField]
+    private Image imgMouse;
+    [SerializeField] 
+    private Image imgGamePad;
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +38,7 @@ public class TutorialController : MonoBehaviour
         tutorialScreen.SetActive(true);
         UpdateTutorial();
         titleAnimator = txtTitle.GetComponent<Animator>();
-        //messageAnimator = txtMessage.GetComponent<Animator>();
+
         StartCoroutine(ChangeTutorial());
         StartCoroutine(LoadingProgress());
     }
@@ -73,17 +68,37 @@ public class TutorialController : MonoBehaviour
 
     private void StartGame()
     {
+        tutorialScreen.SetActive(false);
         Debug.Log("Pasa a la siguiente escena para iniciar el juego");
+        //SceneManager.LoadScene("NombreDeLaSiguienteEscena"); // Cambia "NombreDeLaSiguienteEscena" por el nombre de la escena que deseas cargar
     }
 
     private void UpdateTutorial()
     {
         //tutorialImage.sprite = images[indexTutorial];
         txtTitle.text = titles[indexTutorial];
+        UpdateImages();
         //txtMessage.text = messages[indexTutorial];
         indexTutorial++;
         if (indexTutorial == titles.Length)
             indexTutorial = 0;
+    }
+    
+    private void UpdateImages()
+    {
+        switch (indexTutorial)
+        {
+            case 0:
+                imgKeyboard.enabled = true;
+                imgMouse.enabled = true;
+                imgGamePad.enabled = false;
+                break;
+            case 1:
+                imgKeyboard.enabled = false;
+                imgMouse.enabled = false;
+                imgGamePad.enabled = true;
+                break;
+        }
     }
 
     private IEnumerator ChangeTutorial()
@@ -92,22 +107,15 @@ public class TutorialController : MonoBehaviour
         {
             // Fade out
             titleAnimator.Play("FadeOut");
-            //messageAnimator.Play("FadeOut");
             yield return new WaitForSeconds(1f); // Esperar a que termine la animación de fade out
 
             UpdateTutorial();
 
             // Fade in
             titleAnimator.Play("FadeIn");
-            //messageAnimator.Play("FadeIn");
             yield return new WaitForSeconds(displayTime - 1f); // Esperar el tie
         }
     }
 
-
-    // Ocultar la pantalla de tutorial después de mostrar todas las imágenes
-    //tutorialScreen.SetActive(false);
-    // Aquí puedes iniciar el juego
-    //StartGame();
 
 }
