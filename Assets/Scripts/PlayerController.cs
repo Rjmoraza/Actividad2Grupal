@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     float aimTarget;
     bool canWalk = true;
     bool canAim = true;
+    public bool isPaused = false;
     float waterCooldown = 0;
     float hitpoints;
 
@@ -58,11 +59,16 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     GameObject cameraPrefab;
-    
+
+    [SerializeField]
+    PauseMenu pauseMenuManager;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
+
         rb = GetComponent<Rigidbody>();
         shotgun.SetActive(false);
         GameObject camContainer = Instantiate(cameraPrefab, Vector3.zero, Quaternion.identity);
@@ -122,6 +128,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext c)
     {
+        if (isPaused) return;
         movementVector = c.ReadValue<Vector2>();
         //movementVector = (transform.forward * moveValue.y + transform.right * moveValue.x);
         if (movementVector.magnitude > 1) movementVector = movementVector.normalized;
@@ -134,6 +141,7 @@ public class PlayerController : MonoBehaviour
     /// <param name="c">Information of the Input received in Vector2 format</param>
     public void OnLookAdditive(InputAction.CallbackContext c)
     {
+        if (isPaused) return;
         Vector2 lookValue = c.ReadValue<Vector2>();
         yawValue = lookValue.x * 0.2f; //Mouse delta is too sensitive
         pitchValue = Mathf.Clamp(pitchValue + lookValue.y * Time.fixedDeltaTime, minAimHeight, maxAimHeight);
@@ -146,6 +154,7 @@ public class PlayerController : MonoBehaviour
     /// <param name="c">Information from Input received in Vector2 format</param>
     public void OnLook(InputAction.CallbackContext c)
     {
+        if (isPaused) return;
         Vector2 lookValue = c.ReadValue<Vector2>();
         yawValue = lookValue.x;
 
@@ -155,11 +164,13 @@ public class PlayerController : MonoBehaviour
 
     public void OnFire1(InputAction.CallbackContext c)
     {
+        if (isPaused) return;
         StartCoroutine(FireShotgun());
     }
 
     public void OnFire2(InputAction.CallbackContext c)
     {
+        if (isPaused) return;
         if (waterCooldown <= 0)
         {
             waterCooldown = maxWaterCooldown;
@@ -169,6 +180,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnAim(InputAction.CallbackContext c)
     {
+        if (isPaused) return;
         if (c.performed)
         {
             aimTarget = 1;
@@ -178,6 +190,24 @@ public class PlayerController : MonoBehaviour
         {
             aimTarget = 0;
             camBrain.DisengageAim();
+        }
+    }
+
+    public void OnPause(InputAction.CallbackContext c)
+    {
+
+        if (c.performed)
+        {
+            isPaused = !isPaused;
+            if (isPaused)
+            {
+                pauseMenuManager.PauseGame();
+            }
+            else
+            {
+                pauseMenuManager.ResumeGame();
+            }
+            Debug.Log("Pause" + isPaused);
         }
     }
 
