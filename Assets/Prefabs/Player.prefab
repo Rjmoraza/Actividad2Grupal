@@ -569,6 +569,7 @@ MonoBehaviour:
     type: 3}
   cameraPrefab: {fileID: 2633553722651629491, guid: b68f44245e011ab4cb2e30453d247073,
     type: 3}
+  pauseMenu: {fileID: 0}
 --- !u!114 &8176320886139010752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -691,6 +692,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 61cda942-c9eb-495a-a1e8-c47392cf7728
     m_ActionName: CharacterController/LookAdditive[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2778348278381418201}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnPause
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bf9d5edf-e8df-44bc-93f5-8edfa798e52c
+    m_ActionName: CharacterController/Pause[/XInputControllerWindows/start,/Keyboard/escape,/Keyboard/p]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: CharacterController
