@@ -70,7 +70,7 @@ public class TutorialController : MonoBehaviour
     {
         tutorialScreen.SetActive(false);
         Debug.Log("Pasa a la siguiente escena para iniciar el juego");
-        //SceneManager.LoadScene("NombreDeLaSiguienteEscena"); // Cambia "NombreDeLaSiguienteEscena" por el nombre de la escena que deseas cargar
+        SceneManager.LoadScene("Mapa"); // Cambia "NombreDeLaSiguienteEscena" por el nombre de la escena que deseas cargar
     }
 
     private void UpdateTutorial()
