@@ -60,7 +60,7 @@ public class TutorialController : MonoBehaviour
         continueText.gameObject.SetActive(true);
 
         // Esperar a que el usuario presione cualquier tecla
-        yield return new WaitUntil(() => Input.anyKeyDown);
+        //yield return new WaitUntil(() => Input.anyKeyDown);
 
         // Iniciar el juego
         StartGame();
@@ -68,9 +68,8 @@ public class TutorialController : MonoBehaviour
 
     private void StartGame()
     {
-        tutorialScreen.SetActive(false);
-        Debug.Log("Pasa a la siguiente escena para iniciar el juego");
-        SceneManager.LoadScene("Mapa"); // Cambia "NombreDeLaSiguienteEscena" por el nombre de la escena que deseas cargar
+        //tutorialScreen.SetActive(false);
+        SceneManager.LoadScene("Mapa"); 
     }
 
     private void UpdateTutorial()
